@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Attendance</title>
+</head>
+<body>
+    <table class="table table-striped table-inverse table-responsive" width=100%>
+        <thead class="thead-inverse">
+            <tr>
+                <th>Subject</th>
+                <th>No of Days Present</th>
+                <th>No of Days Absent</th>
+                <th>Total No of Days</th>
+                <th>Message</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for i in sub[0] %}
+                    {% if (i[1]/i[3]>=0.75) %}
+                    <tr style="background-color: green;text-align: center;">
+                        <td scope="row">{{i[0]}}</td>
+                        <td>{{i[1]}}</td>
+                        <td>{{i[2]}}</td>
+                        <td>{{i[3]}}</td>
+                        <td>Attendance is greater than 75%.</td>
+                    </tr>
+                    {% else %}
+                    <tr style="background-color: red;text-align: center;">
+                        <td scope="row">{{i[0]}}</td>
+                        <td>{{i[1]}}</td>
+                        <td>{{i[2]}}</td>
+                        <td>{{i[3]}}</td>
+                        <td>You Need More {{i[4]}} Class to get 75% attendance</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+    </table>
+    
+</body>
+</html>

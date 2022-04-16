@@ -157,7 +157,7 @@ def get_attendance_record(username, password, year, season):
                 sub.append([data["Subject"][i], int(data["No. of Present"][i].split(".")[0]),int(data["No. of Absent"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0])])
             else:
                 a, b = int(data["No. of Present"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0])
-                while a/b<0.75:
+                while b!=0 and a/b<0.75:
                     a+=1
                     b+=1
                 sub.append([data["Subject"][i], int(data["No. of Present"][i].split(".")[0]),int(data["No. of Absent"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0]), a-int(data["No. of Present"][i].split(".")[0])])

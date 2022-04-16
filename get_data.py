@@ -87,16 +87,26 @@ def get_attendance_record(username, password, year, season):
 
         tg1, tg2, tg3, tg4 = -1, -1, -1, -1
 
+        htmlContent = web.find_element_by_tag_name('html').text
+        c = 10
+        if "No. of Excuses" not in htmlContent:
+            c-=1
+        if "Total Percentage" not in htmlContent:
+            c-=1
+        if "Total Percentage with Excuses" not in htmlContent:
+            c-=1
+        c-=(2-htmlContent.count('Faculty Name'))
+
         for i in range(len(web.find_elements_by_tag_name('td'))):
             if tg1 == -1 or tg2 == -1 or tg3 == -1 or tg4 == -1:
                 if web.find_elements_by_tag_name('td')[i].text == "Subject":
-                    tg1 = i+10
+                    tg1 = i+c
                 if web.find_elements_by_tag_name('td')[i].text == "No.of Present":
-                    tg2 = i+10
+                    tg2 = i+c
                 if web.find_elements_by_tag_name('td')[i].text == "No.of Absent":
-                    tg3 = i+10
+                    tg3 = i+c
                 if web.find_elements_by_tag_name('td')[i].text == "Total No. of Days":
-                    tg4 = i+10
+                    tg4 = i+c
             else:
                 break
         
@@ -134,10 +144,10 @@ def get_attendance_record(username, password, year, season):
                 else:
                     break
 
-                tg1+=10
-                tg2+=10
-                tg3+=10
-                tg4+=10
+                tg1+=c
+                tg2+=c
+                tg3+=c
+                tg4+=c
 
             except:
                 break

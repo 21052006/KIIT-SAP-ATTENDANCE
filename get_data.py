@@ -85,64 +85,63 @@ def get_attendance_record(username, password, year, season):
 
         time.sleep(3)
 
-        data_ = web.find_element_by_tag_name("html").text.split("\n")
+        tg1, tg2, tg3, tg4 = -1, -1, -1, -1
+
+        for i in range(len(web.find_elements_by_tag_name('td'))):
+            if tg1 == -1 or tg2 == -1 or tg3 == -1 or tg4 == -1:
+                if web.find_elements_by_tag_name('td')[i].text == "Subject":
+                    tg1 = i+10
+                if web.find_elements_by_tag_name('td')[i].text == "No.of Present":
+                    tg2 = i+10
+                if web.find_elements_by_tag_name('td')[i].text == "No.of Absent":
+                    tg3 = i+10
+                if web.find_elements_by_tag_name('td')[i].text == "Total No. of Days":
+                    tg4 = i+10
+            else:
+                break
+        
+        if tg1 == -1 or tg2 == -1 or tg3 == -1 or tg4 == -1:
+            return "Column in Attendance Table is hidden"
 
         data = {
             "Subject": [], 
             "No. of Present": [], 
             "No. of Absent": [], 
             "Total No. of days": [],
-            "Total Precentage": [],
-            "Total precentage of excuses": [], 
-            "Faculty Code": [], 
-            "Faculty Name": [], 
-            "No. of Execuses": []
         }
-
-        for i in data_:
-            if i.startswith("  ") and len(i.split(" "))>=9:
-                subject = ""
-                np = -1
-                na = -1
-                tnd = -1
-                tp = -1
-                tpe = -1
-                fc = -1
-                fn = ""
-                ne = -1
-                for j in i.split():
-                    if j.isalpha() or j == 'Mathematics-II':
-                        if np == -1:
-                            subject += j + " "
-                        else:
-                            fn += j + " "
-                    else:
-                        if np == -1:
-                            np = j
-                        elif na == -1:
-                            na = j
-                        elif tnd == -1:
-                            tnd = j
-                        elif tp  ==  -1:
-                            tp = j
-                        elif tpe == -1:
-                            tpe = j
-                        elif fc == -1:
-                            fc = j
-                        elif ne == -1:
-                            ne = j
-                data["Subject"].append(subject)
-                data["No. of Present"].append(np)
-                data["No. of Absent"].append(na)
-                data["Total No. of days"].append(tnd)
-                data["Total Precentage"].append(tp)
-                data["Total precentage of excuses"].append(tpe)
-                data["Faculty Code"].append(fc)
-                data["Faculty Name"].append(fn)
-                data["No. of Execuses"].append(ne)
-
+                
         sub = []
 
+        while True:
+            try:
+                if web.find_elements_by_tag_name('td')[tg1].text.strip() != "":
+                    data['Subject'].append(web.find_elements_by_tag_name('td')[tg1].text)
+                else:
+                    break
+                
+                if web.find_elements_by_tag_name('td')[tg2].text.strip() != "":
+                    data['No. of Present'].append(web.find_elements_by_tag_name('td')[tg2].text)
+                else:
+                    break
+                
+                if web.find_elements_by_tag_name('td')[tg3].text.strip() != "":
+                    data['No. of Absent'].append(web.find_elements_by_tag_name('td')[tg3].text)
+                else:
+                    break
+                
+                if web.find_elements_by_tag_name('td')[tg4].text.strip() != "":
+                    data['Total No. of days'].append(web.find_elements_by_tag_name('td')[tg4].text)
+                else:
+                    break
+
+                tg1+=10
+                tg2+=10
+                tg3+=10
+                tg4+=10
+
+            except:
+                break
+        
         for i in range(len(data["Subject"])):
             if int(data["No. of Present"][i].split(".")[0])/int(data["Total No. of days"][i].split(".")[0])>=0.75:
                 sub.append([data["Subject"][i], int(data["No. of Present"][i].split(".")[0]),int(data["No. of Absent"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0])])
@@ -152,5 +151,6 @@ def get_attendance_record(username, password, year, season):
                     a+=1
                     b+=1
                 sub.append([data["Subject"][i], int(data["No. of Present"][i].split(".")[0]),int(data["No. of Absent"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0]), a-int(data["No. of Present"][i].split(".")[0])])
+        
         web.quit()
         return sub

@@ -13,7 +13,7 @@ def login():
 def get():
     if request.method == "POST":
         if data[0] == 0:
-            data[0] = get_data.get_attendance_record(request.form["username"], request.form['password'])        
+            data[0] = get_data.get_attendance_record(request.form["username"], request.form['password'], request.form['year'], request.form['season'])        
         if data[0]!="Failed to pass credentials":
             return render_template("show_table.html", sub=data)
         else:

@@ -12,7 +12,7 @@ import getpass
 chromedriver_autoinstaller.install()
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-def get_attendance_record(username, password):
+def get_attendance_record(username, password, year, season):
     data = {
         "logonuidfield": username,
         "logonpassfield": password
@@ -77,9 +77,9 @@ def get_attendance_record(username, password):
             else:
                 time.sleep(0.3)
 
-        web.find_element_by_id("WD5C").send_keys('2021-2022')
+        web.find_element_by_id("WD5C").send_keys(year)
 
-        web.find_element_by_id("WD74").send_keys('Spring')
+        web.find_element_by_id("WD74").send_keys(season)
 
         web.find_element_by_id("WD81").click()
 

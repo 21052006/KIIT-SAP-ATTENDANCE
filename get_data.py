@@ -12,7 +12,7 @@ import getpass
 chromedriver_autoinstaller.install()
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-def get_attendance_record(username, password, year, season):
+def get_attendance_record(username, password, year, season, percentage):
     data = {
         "logonuidfield": username,
         "logonpassfield": password
@@ -58,9 +58,9 @@ def get_attendance_record(username, password, year, season):
         return "Failed to pass credentials"
         web.quit()
     else:
-        click_by_class_name("prtlTopNav1stLvl-i")
+        click_by_xpath('//*[@id="navNodeAnchor_1_1"]')
 
-        web.switch_to.frame("Desktop Inner Page    ")
+        web.switch_to.frame("Desktop Inner Page   ")
 
         web.find_elements_by_css_selector("span[class='urTxtStd']")[0].click()
 
@@ -153,11 +153,11 @@ def get_attendance_record(username, password, year, season):
                 break
         
         for i in range(len(data["Subject"])):
-            if int(data["No. of Present"][i].split(".")[0])/int(data["Total No. of days"][i].split(".")[0])>=0.75:
+            if int(data["No. of Present"][i].split(".")[0])/int(data["Total No. of days"][i].split(".")[0])>=float(percentage)/100:
                 sub.append([data["Subject"][i], int(data["No. of Present"][i].split(".")[0]),int(data["No. of Absent"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0])])
             else:
                 a, b = int(data["No. of Present"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0])
-                while b!=0 and a/b<0.75:
+                while b!=0 and a/b<float(percentage)/100:
                     a+=1
                     b+=1
                 sub.append([data["Subject"][i], int(data["No. of Present"][i].split(".")[0]),int(data["No. of Absent"][i].split(".")[0]), int(data["Total No. of days"][i].split(".")[0]), a-int(data["No. of Present"][i].split(".")[0])])

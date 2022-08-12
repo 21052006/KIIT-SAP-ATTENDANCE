@@ -24,7 +24,7 @@
                             <td style="text-align: center;">{{i[1]}}</td>
                             <td style="text-align: center;">{{i[2]}}</td>
                             <td style="text-align: center;">{{i[3]}}</td>
-                            <td style="text-align: center;">Attendance is greater than 75%</td>
+                            <td style="text-align: center;">Attendance is greater than {{percentage}}</td>
                         </tr>
                     {% else %}
                         <tr class="text-danger">
@@ -32,7 +32,7 @@
                             <td style="text-align: center;">{{i[1]}}</td>
                             <td style="text-align: center;">{{i[2]}}</td>
                             <td style="text-align: center;">{{i[3]}}</td>
-                            <td style="text-align: center;">You Need More {{i[4]}} Class to get 75% attendance</td>
+                            <td style="text-align: center;">You Need More {{i[4]}} Class to get {{percentage}} attendance</td>
                         </tr>
                     {% endif %}
                 {% endfor %}

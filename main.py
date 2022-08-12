@@ -13,7 +13,7 @@ def login():
 def get():
     if request.method == "POST":
         if data[0] == 0:
-            data[0] = get_data.get_attendance_record(request.form["username"], request.form['password'], request.form['year'], request.form['season'])        
+            data[0] = get_data.get_attendance_record(request.form["username"], request.form['password'], request.form['year'], request.form['season'], request.form['percentage'])
         if data[0]=="Failed to pass credentials":
             flash(message="Failed to pass credentials")
             return redirect("/login")
@@ -21,6 +21,6 @@ def get():
             flash(message="A Column in Attendance Table is hidden")
             return redirect("/login")
         else:
-            return render_template("show_table.html", sub=data)
+            return render_template("show_table.html", sub=data, percentage=request.form['percentage'])
     
-app.run(debug=True)
+app.run()
